@@ -683,3 +683,15 @@ GRANT SELECT ON [dbo].[Orders] TO Supervisor;
 GRANT SELECT ON [dbo].[Orders](OrderID,Course,Quantity) TO UserA; 
 
 ```
+
+### 10 Streaming
+
+- **Tumbling window** - They don't repeat. They don't overlap. An event can't belong to more than one tumbling window.
+- **Hopping window** - Hopping window functions hop forward in time by a fixed period. It might be easy to think of them as tumbling windows that can overlap and be emitted more often than the window size. Events can belong to more than one Hopping window result set. To make a Hopping window the same as a Tumbling window, specify the hop size to be the same as the window size.
+- **Sliding window** - Sliding windows, unlike tumbling or hopping windows, output events only for points in time when the content of the window actually changes. In other words, when an event enters or exits the window. So, every window has at least one event. Similar to hopping windows, events can belong to more than one sliding window.
+- **Session window** - Session window functions group events that arrive at similar times, filtering out periods of time where there's no data. It has three main parameters:
+Timeout
+Maximum duration
+Partitioning key (optional).
+A session window begins when the first event occurs. If another event occurs within the specified timeout from the last ingested event, then the window extends to include the new event. Otherwise if no events occur within the timeout, then the window is closed at the timeout.
+- **Snapshot window** - Snapshot windows group events that have the same timestamp. Unlike other windowing types, which require a specific window function (such as SessionWindow()), you can apply a snapshot window by adding System.Timestamp() to the GROUP BY clause.
